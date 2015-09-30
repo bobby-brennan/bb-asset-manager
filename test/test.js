@@ -21,20 +21,37 @@ describe('AssetManager', function() {
       },
     });
     assman.addJS({
-      name: 'home',
-      files: ['foo.js', 'bar.js'],
+      name: 'all',
+      files: JS_ASSETS,
     });
     assman.addCSS({
-      name: 'home',
-      files: ['a.css', 'b.css'],
+      name: 'all',
+      files: CSS_ASSETS,
     });
-    assman.compile();
+    assman.addJS({
+      name: 'reverse',
+      files: [JS_ASSETS[1], JS_ASSETS[0]],
+    })
+    assman.addJS({
+      name: 'foo',
+      files: ['foo.js'],
+    });
+    assman.addCSS({
+      name: 'b',
+      files: ['b.css'],
+    })
   })
 
-  it('should combine JS assets', function() {
-    Expect(assman.renderJS('home')).to.equal('<script type="text/javascript" src="/assets/js/home.js"></script>');
+  it('should render compiled JS assets', function() {
+    Expect(assman.renderJS('all')).to.equal('<script type="text/javascript" src="/assets/js/all.js"></script>');
+    Expect(assman.renderJS('foo')).to.equal('<script type="text/javascript" src="/assets/js/foo.js"></script>');
+    Expect(assman.renderJS('reverse')).to.equal('<script type="text/javascript" src="/assets/js/reverse.js"></script>');
   });
-  it('should combine CSS assets', function() {
-    Expect(assman.renderCSS('home')).to.equal('<link rel="stylesheet" type="text/css" href="/assets/css/home.css">');
+  it('should render compiled CSS assets', function() {
+    Expect(assman.renderCSS('all')).to.equal('<link rel="stylesheet" type="text/css" href="/assets/css/all.css">');
+    Expect(assman.renderCSS('b')).to.equal('<link rel="stylesheet" type="text/css" href="/assets/css/b.css">');
   });
+  it('should compile', function() {
+    assman.compile();
+  })
 });
