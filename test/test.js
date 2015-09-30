@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var FS = require('fs');
 var Expect = require('chai').expect;
 var AssMan = require('../index.js');
@@ -8,8 +9,9 @@ describe('AssetManager', function() {
   var JS_ASSETS = ['foo.js', 'bar.js'];
   var CSS_ASSETS = ['a.css', 'b.css'];
 
-  before(function() {
-    assman = new AssMan({
+  var setup = function(opts) {
+    opts = opts || {};
+    assman = new AssMan(_.extend(opts, {
       staticDirectory: __dirname,
       js: {
         inputDirectory: 'assets/js',
@@ -19,7 +21,7 @@ describe('AssetManager', function() {
         inputDirectory: 'assets/css',
         outputDirectory: 'golden/css',
       },
-    });
+    }));
     assman.addJS({
       name: 'all',
       files: JS_ASSETS,
@@ -39,19 +41,32 @@ describe('AssetManager', function() {
     assman.addCSS({
       name: 'b',
       files: ['b.css'],
-    })
-  })
+    });
+  }
 
-  it('should render compiled JS assets', function() {
-    Expect(assman.renderJS('all')).to.equal('<script type="text/javascript" src="/assets/js/all.js"></script>');
-    Expect(assman.renderJS('foo')).to.equal('<script type="text/javascript" src="/assets/js/foo.js"></script>');
-    Expect(assman.renderJS('reverse')).to.equal('<script type="text/javascript" src="/assets/js/reverse.js"></script>');
+  var getJS = function(filename) {
+    return '<script type="text/javascript" src="' + filename  + '"></script>';
+  }
+  var getCSS = function(filename) {
+    return '<link rel="stylesheet" type="text/css" href="' + filename + '">';
+  }
+
+  it('should render concatenated assets', function() {
+    setup();
+    Expect(assman.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
+    Expect(assman.renderJS('foo')).to.equal(getJS('/golden/js/foo.js'));
+    Expect(assman.renderJS('reverse')).to.equal(getJS('/golden/js/reverse.js'));
+    Expect(assman.renderCSS('all')).to.equal(getCSS('/golden/css/all.css'));
+    Expect(assman.renderCSS('b')).to.equal(getCSS('/golden/css/b.css'));
   });
-  it('should render compiled CSS assets', function() {
-    Expect(assman.renderCSS('all')).to.equal('<link rel="stylesheet" type="text/css" href="/assets/css/all.css">');
-    Expect(assman.renderCSS('b')).to.equal('<link rel="stylesheet" type="text/css" href="/assets/css/b.css">');
-  });
-  it('should compile', function() {
-    assman.compile();
+  it('should render individual assets', function() {
+    setup({
+      concatenate: false,
+    });
+    Expect(assman.renderJS('all')).to.equal(getJS('/assets/js/foo.js') + '\n' + getJS('/assets/js/bar.js'));
+    Expect(assman.renderJS('foo')).to.equal(getJS('/assets/js/foo.js'));
+    Expect(assman.renderJS('reverse')).to.equal(getJS('/assets/js/bar.js') + '\n' + getJS('/assets/js/foo.js'));
+    Expect(assman.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
+    Expect(assman.renderCSS('b')).to.equal(getCSS('/assets/css/b.css'));
   })
 });
