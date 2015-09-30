@@ -59,6 +59,10 @@ describe('AssetManager', function() {
     Expect(assman.renderCSS('all')).to.equal(getCSS('/golden/css/all.css'));
     Expect(assman.renderCSS('b')).to.equal(getCSS('/golden/css/b.css'));
   });
+  it('should compile', function() {
+    setup();
+    assman.compile();
+  });
   it('should render individual assets', function() {
     setup({
       concatenate: false,
@@ -68,5 +72,5 @@ describe('AssetManager', function() {
     Expect(assman.renderJS('reverse')).to.equal(getJS('/assets/js/bar.js') + '\n' + getJS('/assets/js/foo.js'));
     Expect(assman.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
     Expect(assman.renderCSS('b')).to.equal(getCSS('/assets/css/b.css'));
-  })
+  });
 });
