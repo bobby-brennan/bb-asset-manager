@@ -91,4 +91,11 @@ describe('AssetManager', function() {
     Expect(assman.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
     Expect(assman.renderCSS('b')).to.equal(getCSS('/assets/css/b.css'));
   });
+  it('should allow basePath', function() {
+    var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
+    opts.basePath = '/base';
+    var assman = setup(opts);
+    Expect(assman.renderJS('all')).to.equal(getJS('/base/golden/js/all.js'));
+    Expect(assman.renderCSS('all')).to.equal(getCSS('/base/golden/css/all.css'));
+  })
 });
