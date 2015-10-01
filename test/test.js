@@ -22,12 +22,10 @@ describe('AssetManager', function() {
         outputDirectory: 'golden/css',
       },
     }));
-    assman.addJS({
-      name: 'all',
+    assman.addJS('all', {
       files: JS_ASSETS,
     });
-    assman.addCSS({
-      name: 'all',
+    assman.addCSS('all', {
       files: CSS_ASSETS,
     });
     assman.addJS({
