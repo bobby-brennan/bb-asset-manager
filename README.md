@@ -17,6 +17,7 @@ assets e.g. for easier debugging in development.
     js:  ['bower_components/bootstrap/bootstrap.js'],
     css: ['bower_components/bootstrap/bootstrap.css'],
   });
+
   assetMan.addAsset('home', {
     css: ['css/home.css'],
     dependencies: ['bootstrap'],
@@ -35,7 +36,8 @@ Will output
 ```
 
 ## Advanced Usage
-See [Advanced Usage](AdvancedUsage.md)
+See [Advanced Usage](AdvancedUsage.md) for details on controlling minification,
+concatenation, and file ordering.
 
 
 ## Contributions
