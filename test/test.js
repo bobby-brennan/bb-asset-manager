@@ -47,9 +47,9 @@ describe('AssetManager', function() {
 
   it('should render concatenated assets', function() {
     var assetMan = setup();
-    Expect(assetMan.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
-    Expect(assetMan.renderJS('reverse')).to.equal(getJS('/golden/js/reverse.js'));
-    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/golden/css/all.css'));
+    Expect(assetMan.getJSTags('all')).to.equal(getJS('/golden/js/all.js'));
+    Expect(assetMan.getJSTags('reverse')).to.equal(getJS('/golden/js/reverse.js'));
+    Expect(assetMan.getCSSTags('all')).to.equal(getCSS('/golden/css/all.css'));
   });
   it('should compile', function() {
     var assetMan = setup();
@@ -67,22 +67,22 @@ describe('AssetManager', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.useOriginalAssets = true;
     var assetMan = setup(opts);
-    Expect(assetMan.renderJS('all')).to.equal(getJS('/assets/js/a.js') + '\n' + getJS('/assets/js/b.js'));
-    Expect(assetMan.renderJS('reverse')).to.equal(getJS('/assets/js/b.js') + '\n' + getJS('/assets/js/a.js'));
+    Expect(assetMan.getJSTags('all')).to.equal(getJS('/assets/js/a.js') + '\n' + getJS('/assets/js/b.js'));
+    Expect(assetMan.getJSTags('reverse')).to.equal(getJS('/assets/js/b.js') + '\n' + getJS('/assets/js/a.js'));
   });
   it('should allow language override', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.useOriginalAssets = true;
     opts.js.useOriginalAssets = false;
     var assetMan = setup(opts);
-    Expect(assetMan.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
-    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
+    Expect(assetMan.getJSTags('all')).to.equal(getJS('/golden/js/all.js'));
+    Expect(assetMan.getCSSTags('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
   });
   it('should allow basePath', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.basePath = '/base';
     var assetMan = setup(opts);
-    Expect(assetMan.renderJS('all')).to.equal(getJS('/base/golden/js/all.js'));
-    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/base/golden/css/all.css'));
+    Expect(assetMan.getJSTags('all')).to.equal(getJS('/base/golden/js/all.js'));
+    Expect(assetMan.getCSSTags('all')).to.equal(getCSS('/base/golden/css/all.css'));
   })
 });
