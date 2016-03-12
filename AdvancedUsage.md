@@ -4,7 +4,7 @@
 Options can be set by calling `new AssetMan(opts)`. They can also be passed to `addAsset(opts)` to
 override values set at the top level.
 
-* `basePath` - the prefix to add to URLs in <script> and <style> tags
+* `basePath` - the prefix to add to URLs in `<script>` and `<style>` tags
 * `staticDirectory` - the directory that contains your static assets
 * `inputDirectory` - relative to `staticDirectory`, where your raw assets live
 * `outputDirectory` - relative to `staticDirectory`, where AssetManager will put your compiled assets
