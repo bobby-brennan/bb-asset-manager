@@ -1,1 +1,1 @@
-var AssMan = module.exports = require('./lib/asset-manager.js');
+var AssetMan = module.exports = require('./lib/asset-manager.js');
