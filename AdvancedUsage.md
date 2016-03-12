@@ -21,6 +21,12 @@ Top-level options can also be overridden at the asset level.
 * `dependencies` - an array of other asset names that need to be loaded **before** this asset
 * `dependents` - an array of other asset names that need to be loaded **after** this asset
 
+## Rendering
+`assetMan.getAssetTags(name)` will return a string containing `<script>` and `<source>` tags
+for the given asset. You can also use `assetMan.getJSTags(name)` and `assetMan.getCSSTags(name)`.
+
+
+
 ```js
 var AssetMan = require('bb-asset-manager');
 var assetMan = new AssetMan({
@@ -63,7 +69,7 @@ app.listen(3000);
 doctype html
 html
   head
-    | !{assetManager.renderAsset('home')}
+    | !{assetManager.getAssetTags('home')}
   body(ng-app="App")
     h1 Hello World!
 ```
