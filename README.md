@@ -14,8 +14,8 @@ assets e.g. for easier debugging in development.
     outputDirectory: '/minified',           // Relative to staticDirectory
   });
   assetMan.addAsset('bootstrap', {
-    js: ['bower_components/bootstrap/bootstrap.js']
-    css: ['bower_components/bootstrap/bootstrap.css']
+    js:  ['bower_components/bootstrap/bootstrap.js'],
+    css: ['bower_components/bootstrap/bootstrap.css'],
   });
   assetMan.addAsset('home', {
     css: ['css/home.css'],
