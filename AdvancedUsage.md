@@ -1,8 +1,7 @@
 # Advanced Usage
 
-## Options
-Options can be set by calling `new AssetMan(opts)`. They can also be passed to `addAsset(opts)` to
-override values set at the top level.
+## Top-Level Options
+These options can be set by calling `new AssetMan(opts)`.
 
 * `basePath` - the prefix to add to URLs in `<script>` and `<style>` tags
 * `staticDirectory` - the directory that contains your static assets
@@ -11,6 +10,15 @@ override values set at the top level.
 * `useOriginalAssets` (default false) - `renderAsset()` will print `<script>` and `<style>` tags that point to
 input files rather than the minified assets
 
+## Asset Options
+These options can be set by calling `assetMan.addAsset(name, opts)`
+
+Top-level options can also be overridden at the asset level.
+
+* `js` - an array of JavaScript files, relative to `inputDirectory`
+* `css` - an array of CSS files, relative to `outputDirectory`
+* `dependencies` - an array of other asset names that need to be loaded **before** this asset
+* `dependents` - an array of other asset names that need to be loaded **after** this asset
 
 ```js
 var AssetMan = require('bb-asset-manager');
@@ -24,9 +32,15 @@ assetMan.addAsset('bootstrap', {
   js: ['bower_components/bootstrap/bootstrap.js']
   css: ['bower_components/bootstrap/bootstrap.css']
 });
+assetMan.addAsset('widget', {
+  js: ['js/widget.js'],
+  css: ['css/widget.css'],
+})
 assetMan.addAsset('home', {
-  css: ['css/home.css'],
   dependencies: ['bootstrap'],
+  js: ['js/app.js'],
+  css: ['css/home.css'],
+  dependents: ['widget'],
 })
 
 assetMan.compileSync();
