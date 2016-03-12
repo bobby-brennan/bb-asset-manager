@@ -31,9 +31,9 @@ describe('AssetManager', function() {
       files: [JS_ASSETS[1], JS_ASSETS[0]],
     })
     assetMan.addAsset('depend', {
-      dependencies: ['b'],
+      dependencies: ['all'],
       js: [JS_ASSETS[0]],
-      dependents: ['b'],
+      dependents: ['all'],
     });
     return assetMan;
   }
