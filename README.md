@@ -6,6 +6,11 @@ You can then package files in that directory together into concatenated and mini
 which can be easily included in your HTML. You can also easily switch between using raw and minified
 assets e.g. for easier debugging in development.
 
+## Installation
+```bash
+npm install --save bb-asset-manager
+```
+
 ## Basic Usage
 ```js
   var AssetMan = require('bb-asset-manager');
