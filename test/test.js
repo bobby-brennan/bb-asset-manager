@@ -1,10 +1,10 @@
 var _ = require('lodash');
 var FS = require('fs');
 var Expect = require('chai').expect;
-var AssMan = require('../index.js');
+var AssetMan = require('../index.js');
 
 describe('AssetManager', function() {
-  var JS_ASSETS = ['foo.js', 'bar.js'];
+  var JS_ASSETS = ['a.js', 'b.js'];
   var CSS_ASSETS = ['a.css', 'b.css'];
   var DEFAULT_OPTS = {
     staticDirectory: __dirname,
@@ -21,30 +21,21 @@ describe('AssetManager', function() {
 
   var setup = function(opts) {
     opts = opts || DEFAULT_OPTS;
-    var assman = new AssMan(opts);
-    assman.addJS('all', {
-      files: JS_ASSETS,
-    });
-    assman.addCSS('all', {
-      files: CSS_ASSETS,
-    });
-    assman.addJS({
+    var assetMan = new AssetMan(opts);
+    assetMan.addAsset('all', {
+      js: JS_ASSETS,
+      css: CSS_ASSETS,
+    })
+    assetMan.addJS({
       name: 'reverse',
       files: [JS_ASSETS[1], JS_ASSETS[0]],
     })
-    assman.addJS({
-      name: 'foo',
-      files: ['foo.js'],
-    });
-    assman.addCSS({
-      name: 'b',
-      files: ['b.css'],
-    });
-    assman.addAsset('depend', {
+    assetMan.addAsset('depend', {
+      dependencies: ['b'],
       js: [JS_ASSETS[0]],
-      dependencies: ['foo', 'b'],
-    })
-    return assman
+      dependents: ['b'],
+    });
+    return assetMan;
   }
 
   var getJS = function(filename) {
@@ -55,51 +46,43 @@ describe('AssetManager', function() {
   }
 
   it('should render concatenated assets', function() {
-    var assman = setup();
-    Expect(assman.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
-    Expect(assman.renderJS('foo')).to.equal(getJS('/golden/js/foo.js'));
-    Expect(assman.renderJS('reverse')).to.equal(getJS('/golden/js/reverse.js'));
-    Expect(assman.renderCSS('all')).to.equal(getCSS('/golden/css/all.css'));
-    Expect(assman.renderCSS('b')).to.equal(getCSS('/golden/css/b.css'));
+    var assetMan = setup();
+    Expect(assetMan.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
+    Expect(assetMan.renderJS('reverse')).to.equal(getJS('/golden/js/reverse.js'));
+    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/golden/css/all.css'));
   });
   it('should compile', function() {
-    var assman = setup();
-    assman.compile();
+    var assetMan = setup();
+    assetMan.compile();
   });
   it('should compile minified', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.minify = true;
     opts.js.outputDirectory += '_min';
     opts.css.outputDirectory += '_min';
-    var assman = setup(opts);
-    assman.compile();
+    var assetMan = setup(opts);
+    assetMan.compile();
   })
   it('should render original assets', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.useOriginalAssets = true;
-    var assman = setup(opts);
-    Expect(assman.renderJS('all')).to.equal(getJS('/assets/js/foo.js') + '\n' + getJS('/assets/js/bar.js'));
-    Expect(assman.renderJS('foo')).to.equal(getJS('/assets/js/foo.js'));
-    Expect(assman.renderJS('reverse')).to.equal(getJS('/assets/js/bar.js') + '\n' + getJS('/assets/js/foo.js'));
-    Expect(assman.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
-    Expect(assman.renderCSS('b')).to.equal(getCSS('/assets/css/b.css'));
+    var assetMan = setup(opts);
+    Expect(assetMan.renderJS('all')).to.equal(getJS('/assets/js/a.js') + '\n' + getJS('/assets/js/b.js'));
+    Expect(assetMan.renderJS('reverse')).to.equal(getJS('/assets/js/b.js') + '\n' + getJS('/assets/js/a.js'));
   });
   it('should allow language override', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.useOriginalAssets = true;
     opts.js.useOriginalAssets = false;
-    var assman = setup(opts);
-    Expect(assman.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
-    Expect(assman.renderJS('foo')).to.equal(getJS('/golden/js/foo.js'));
-    Expect(assman.renderJS('reverse')).to.equal(getJS('/golden/js/reverse.js'));
-    Expect(assman.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
-    Expect(assman.renderCSS('b')).to.equal(getCSS('/assets/css/b.css'));
+    var assetMan = setup(opts);
+    Expect(assetMan.renderJS('all')).to.equal(getJS('/golden/js/all.js'));
+    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/assets/css/a.css') + '\n' + getCSS('/assets/css/b.css'));
   });
   it('should allow basePath', function() {
     var opts = JSON.parse(JSON.stringify(DEFAULT_OPTS));
     opts.basePath = '/base';
-    var assman = setup(opts);
-    Expect(assman.renderJS('all')).to.equal(getJS('/base/golden/js/all.js'));
-    Expect(assman.renderCSS('all')).to.equal(getCSS('/base/golden/css/all.css'));
+    var assetMan = setup(opts);
+    Expect(assetMan.renderJS('all')).to.equal(getJS('/base/golden/js/all.js'));
+    Expect(assetMan.renderCSS('all')).to.equal(getCSS('/base/golden/css/all.css'));
   })
 });
