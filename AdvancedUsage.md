@@ -7,6 +7,7 @@ These options can be set by calling `new AssetMan(opts)`.
 * `staticDirectory` - the directory that contains your static assets
 * `inputDirectory` - relative to `staticDirectory`, where your raw assets live
 * `outputDirectory` - relative to `staticDirectory`, where AssetManager will put your compiled assets
+* `minify` (default true) - whether to minify the asset after concatenating
 * `useOriginalAssets` (default false) - `renderAsset()` will print `<script>` and `<style>` tags that point to
 input files rather than the minified assets
 
