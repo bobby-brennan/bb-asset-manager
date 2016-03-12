@@ -27,10 +27,15 @@ assets e.g. for easier debugging in development.
   console.log(assetMan.renderAsset('home'))
 ```
 
-```bash
+Will output
+
+```html
 <link rel="stylesheet" type="text/css" href="/minified/css/home.css">
 <script type="text/javascript" src="/minified/js/home.js"></script>
 ```
+
+## Advanced Usage
+See [Advanced Usage](AdvancedUsage.md)
 
 
 ## Contributions
