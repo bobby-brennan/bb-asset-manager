@@ -40,7 +40,7 @@ describe('AssetManager', function() {
       name: 'b',
       files: ['b.css'],
     });
-    assman.addAssets('depend', {
+    assman.addAsset('depend', {
       js: [JS_ASSETS[0]],
       dependencies: ['foo', 'b'],
     })
