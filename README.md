@@ -6,6 +6,11 @@ You can then package files in that directory together into concatenated and mini
 which can be easily included in your HTML. You can also easily switch between using raw and minified
 assets e.g. for easier debugging in development.
 
+## Installation
+```bash
+npm install --save bb-asset-manager
+```
+
 ## Basic Usage
 ```js
   var AssetMan = require('bb-asset-manager');
@@ -14,9 +19,10 @@ assets e.g. for easier debugging in development.
     outputDirectory: '/minified',           // Relative to staticDirectory
   });
   assetMan.addAsset('bootstrap', {
-    js: ['bower_components/bootstrap/bootstrap.js']
-    css: ['bower_components/bootstrap/bootstrap.css']
+    js:  ['bower_components/bootstrap/bootstrap.js'],
+    css: ['bower_components/bootstrap/bootstrap.css'],
   });
+
   assetMan.addAsset('home', {
     css: ['css/home.css'],
     dependencies: ['bootstrap'],
@@ -35,7 +41,8 @@ Will output
 ```
 
 ## Advanced Usage
-See [Advanced Usage](AdvancedUsage.md)
+See [Advanced Usage](AdvancedUsage.md) for details on controlling minification,
+concatenation, and file ordering.
 
 
 ## Contributions
