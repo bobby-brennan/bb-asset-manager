@@ -51,6 +51,11 @@ describe('AssetManager', function() {
     Expect(assetMan.getJSTags('reverse')).to.equal(getJS('/golden/js/reverse.js'));
     Expect(assetMan.getCSSTags('all')).to.equal(getCSS('/golden/css/all.css'));
   });
+  it('should render all tags', function() {
+    var assetMan = setup();
+    Expect(assetMan.getAssetTags('all')).to.equal(
+      getCSS('/golden/css/all.css') + getJS('/golden/js/all.js'));
+  })
   it('should compile', function() {
     var assetMan = setup();
     assetMan.compile();
