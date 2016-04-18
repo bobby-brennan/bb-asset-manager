@@ -3,6 +3,7 @@
 ## Top-Level Options
 These options can be set by calling `new AssetMan(opts)`.
 
+* `rootPath` - set to `'.'` to make all URLs relative
 * `basePath` - the prefix to add to URLs in `<script>` and `<style>` tags
 * `staticDirectory` - the directory that contains your static assets
 * `inputDirectory` - relative to `staticDirectory`, where your raw assets live
